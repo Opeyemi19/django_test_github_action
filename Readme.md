@@ -22,3 +22,5 @@
 Ces packages vont nous permettre de respecter certains principes d'écriture de code dans Python. Lorsqu'on lance la commande **flake8** ou **black** ils vont nous retourner là où se trouve des problèmes.
 
 ## La configuration de GitHub Actions
+
+On a la création de notre dossier **.github/worflows** pour éxecuter notre Test de façon automatique.
