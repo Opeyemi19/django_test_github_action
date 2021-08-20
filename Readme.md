@@ -24,3 +24,6 @@ Ces packages vont nous permettre de respecter certains principes d'écriture de 
 ## La configuration de GitHub Actions
 
 On a la création de notre dossier **.github/worflows** pour éxecuter notre Test de façon automatique.
+
+
+[![Django Tests Automation with GitHub Action](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml/badge.svg?branch=main)](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml)
