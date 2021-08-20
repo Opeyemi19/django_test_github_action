@@ -25,7 +25,11 @@ Ces packages vont nous permettre de respecter certains principes d'écriture de 
 
 On a la création de notre dossier **.github/worflows** pour éxecuter notre Test de façon automatique.
 
+## Pour le Test 
 
-[![build](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml/badge.svg?branch=main)](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml)
+[![Tests](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml/badge.svg)](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml)
+
+
+## Pour l'analyse de code static
 
 [![Quality Gate Status with Sonarcloud](https://sonarcloud.io/api/project_badges/measure?project=Opeyemi19_django_test_github_action&metric=alert_status)](https://sonarcloud.io/dashboard?id=Opeyemi19_django_test_github_action)
