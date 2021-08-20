@@ -43,7 +43,7 @@ jobs:
       - uses: philips-software/sonar-scanner-action@4.6.2.2472
         with:
           token: ${{ secrets.SONAR_TOKEN }}
-          projectName: Opeyemi19_django_test_github_action
+          projectName: Opeyemi19
           projectKey: Opeyemi19_django_test_github_action
           baseDir: .
           url: https://sonarcloud.io/
