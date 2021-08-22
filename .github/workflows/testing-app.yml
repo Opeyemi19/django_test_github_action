@@ -13,7 +13,6 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
@@ -36,7 +35,21 @@ jobs:
       - name: Django Testing
         run: |
           python manage.py test
+
   analyse-sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
     # name: SonarCloud Trigger
     # runs-on: ubuntu-latest
     # steps:
@@ -47,22 +60,24 @@ jobs:
     #     env:
     #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    name: SonarQube
-    runs-on: ubuntu-latest
-    steps:
-      - uses: philips-software/sonar-scanner-action@4.6.2.2472
-        with:
-          token: ${{ secrets.SONAR_TOKEN }}
-          projectName: opeyemi19
-          projectKey: Opeyemi19_django_test_github_action
-          baseDir: .
-          url: https://sonarcloud.io/
+
+    
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - uses: philips-software/sonar-scanner-action@4.6.2.2472
+    #     with:
+    #       token: ${{ secrets.SONAR_TOKEN }}
+    #       projectName: opeyemi19
+    #       projectKey: Opeyemi19_django_test_github_action
+    #       baseDir: .
+    #       url: https://sonarcloud.io/
+    
     # runs-on: ubuntu-latest
     # steps:
     # - uses: actions/checkout@v2
-    #   with:
+    #   # with:
     #     # Disabling shallow clone is recommended for improving relevancy of reporting
-    #     fetch-depth: 0
+    #     # fetch-depth: 0
     # - name: SonarCloud Scan
     #   uses: sonarsource/sonarcloud-github-action@master
     #   with:
@@ -77,3 +92,5 @@ jobs:
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
