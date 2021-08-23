@@ -27,9 +27,10 @@ On a la création de notre dossier **.github/worflows** pour éxecuter notre Tes
 
 ## Pour le Test 
 
-[![Tests](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml/badge.svg)](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml)
+### C'est la branche Master
+[![Django Tests Automation with GitHub Action](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml/badge.svg?branch=main)](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml)
 
 
 ## Pour l'analyse de code static
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Opeyemi19_django_test_github_action&metric=alert_status)](https://sonarcloud.io/dashboard?id=Opeyemi19_django_test_github_action)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pro-test-django&metric=alert_status)](https://sonarcloud.io/dashboard?id=pro-test-django)
