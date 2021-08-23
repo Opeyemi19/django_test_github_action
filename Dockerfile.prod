@@ -61,4 +61,4 @@ USER prodjangotest
 RUN python manage.py migrate --noinput
 
 # Collect all static
-RUN python manage.py collectstatic --noinput
+# RUN python manage.py collectstatic --noinput
