@@ -13,7 +13,7 @@ on:
       - master
 
 jobs:
-  
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -79,7 +79,7 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile.prod
-          builder: ${{ steps.buildx.outputs.name }}
+          # builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/opeyemi19:latest
           cache-from: type=local,src=/tmp/.buildx-cache
