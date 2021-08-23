@@ -1,6 +1,5 @@
 # Django With GitHub Actions in Automated Test
 
-
 ## Usage de coverage pour le Test
 
 * Installation de Coverage
@@ -25,12 +24,21 @@ Ces packages vont nous permettre de respecter certains principes d'écriture de 
 
 On a la création de notre dossier **.github/worflows** pour éxecuter notre Test de façon automatique.
 
-## Pour le Test 
+## La configuration de SonarQube plus précisement dans mon cas avec Sonarcloud
 
-### C'est la branche Master
+- Créer son compte avec les différents moyens mise à disposition tel que GitHub, Gitlag, etc
+- Créer une **organization** si vous n'aviez pas encore crée
+- Créer une nouveau projet, il y a deux options :
+    * Soit vous importez un projet directement a parti de GitHub pour l'analyser dans le sonarcloud.
+    * Ou soit par le moyen de création de projet de façon **manuel** et pour l'intégrer dans notre pipeline CI/CD, ce qui va nous permettre d'avoir les **SECRET_TOKEN**, le code d'intégration dans notre Pipeline GitHub Action, la creaction de **Project Key**
+
+## Les Badges
+
+- C'est pour la branche Master
+
 [![Django Tests Automation with GitHub Action](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml/badge.svg?branch=main)](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml)
 
-
-## Pour l'analyse de code static
+- Pour l'analyse de code source avec Sonarcloud
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pro-test-django&metric=alert_status)](https://sonarcloud.io/dashboard?id=pro-test-django)
+
