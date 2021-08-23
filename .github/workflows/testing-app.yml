@@ -66,11 +66,6 @@ jobs:
     steps:
       - name: Check Out Repo 
         uses: actions/checkout@v2
-
-      - name: SET CURRENT_BRANCH
-        run: |
-          $branchName = "${{github.ref}}".Split("/")["${{github.ref}}".Split("/").Length -1]
-          echo "::set-env name=CURRENT_BRANCH::$(echo $branchName)"
       
       # - name: Cache Docker layers
       #   uses: actions/cache@v2
@@ -97,7 +92,7 @@ jobs:
           # tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${GITHUB_REF##*/}-$GITHUB_SHA
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:latest
-            ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:$($branchName)-${{ github.sha }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action: "${{github.ref}}".Split("/")["${{github.ref}}".Split("/").Length -1]:$($branchName)-${{ github.sha }}
            # docker.YOUR-HOSTNAME.com/${{ github.repository }}/octo-image:${{ github.sha }}
            # docker.YOUR-HOSTNAME.com/${{ github.repository }}/octo-image:${{ github.event.release.tag_name }}
           # cache-from: type=local,src=/tmp/.buildx-cache
