@@ -36,9 +36,8 @@ On a la création de notre dossier **.github/worflows** pour éxecuter notre Tes
 
 - C'est pour la branche Master
 
-[![Django Tests Automation with GitHub Action](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml/badge.svg?branch=main)](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml)
+[![Django Tests Automation with GitHub Action](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml/badge.svg?branch=master)](https://github.com/Opeyemi19/django_test_github_action/actions/workflows/testing-app.yml)
 
 - Pour l'analyse de code source avec Sonarcloud
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=pro-test-django&metric=alert_status)](https://sonarcloud.io/dashboard?id=pro-test-django)
-
