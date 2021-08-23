@@ -61,7 +61,7 @@ jobs:
 
   analyse-snyk: # Pour l'analyse de la vulnérabilité de mon container que je vais builder
     runs-on: ubuntu-latest
-    needs: [analyse-sonarcloud]
+    needs: [test, analyse-sonarcloud]
     steps:
       - uses: actions/checkout@v2
       - name: Build a Docker image
