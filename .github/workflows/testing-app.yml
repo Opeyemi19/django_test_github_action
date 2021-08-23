@@ -91,7 +91,7 @@ jobs:
           file: ./Dockerfile.prod
           # builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${GITHUB_REF##*/}-$GITHUB_SHA
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${GITHUB_REF##*/}
           # cache-from: type=local,src=/tmp/.buildx-cache
           # cache-to: type=local,dest=/tmp/.buildx-cache
 
