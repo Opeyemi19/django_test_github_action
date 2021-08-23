@@ -32,4 +32,4 @@ On a la création de notre dossier **.github/worflows** pour éxecuter notre Tes
 
 ## Pour l'analyse de code static
 
-[![Quality Gate Status with Sonarcloud](https://sonarcloud.io/api/project_badges/measure?project=Opeyemi19_django_test_github_action&metric=alert_status)](https://sonarcloud.io/dashboard?id=Opeyemi19_django_test_github_action)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Opeyemi19_django_test_github_action&metric=alert_status)](https://sonarcloud.io/dashboard?id=Opeyemi19_django_test_github_action)

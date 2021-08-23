@@ -6,6 +6,7 @@ on:
       - main
 
   pull_request:
+    types: [opened, synchronize, reopened]
     branches:
       - main
 
@@ -48,49 +49,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
-    # name: SonarCloud Trigger
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - name: Clone Repository
-    #     uses: actions/checkout@v2
-    #   - name: Analyze with SonarCloud
-    #     uses: sonarsource/sonarcloud-github-action@master
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-    
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - uses: philips-software/sonar-scanner-action@4.6.2.2472
-    #     with:
-    #       token: ${{ secrets.SONAR_TOKEN }}
-    #       projectName: opeyemi19
-    #       projectKey: Opeyemi19_django_test_github_action
-    #       baseDir: .
-    #       url: https://sonarcloud.io/
-    
-    # runs-on: ubuntu-latest
-    # steps:
-    # - uses: actions/checkout@v2
-    #   # with:
-    #     # Disabling shallow clone is recommended for improving relevancy of reporting
-    #     # fetch-depth: 0
-    # - name: SonarCloud Scan
-    #   uses: sonarsource/sonarcloud-github-action@master
-    #   with:
-    #     args: >
-    #       -Dsonar.organization=Opeyemi19
-    #       -Dsonar.projectKey=Opeyemi19_django_test_github_action
-    #       -Dsonar.python.coverage.reportPaths=coverage.xml
-    #       -Dsonar.sources=lib/
-    #       -Dsonar.test.exclusions=tests/**
-    #       -Dsonar.tests=tests/
-    #       -Dsonar.verbose=true
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
