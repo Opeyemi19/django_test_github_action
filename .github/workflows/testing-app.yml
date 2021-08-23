@@ -60,6 +60,11 @@ jobs:
     steps:
       - name: Check Out Repo 
         uses: actions/checkout@v2
+
+      - name: Another step
+        run: |
+          echo "Branch: ${{ steps.vars.outputs.branch }}"
+          echo "Sha: ${{ steps.vars.outputs.sha_short }}"
       
       # - name: Cache Docker layers
       #   uses: actions/cache@v2
@@ -83,7 +88,7 @@ jobs:
           file: ./Dockerfile.prod
           # builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${GITHUB_REF#refs/heads/}-${GITHUB_SHA}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
           # cache-from: type=local,src=/tmp/.buildx-cache
           # cache-to: type=local,dest=/tmp/.buildx-cache
 
