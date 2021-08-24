@@ -62,3 +62,5 @@ RUN python manage.py migrate --noinput
 
 # Collect all static
 # RUN python manage.py collectstatic --noinput
+
+CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "core.wsgi:application"]

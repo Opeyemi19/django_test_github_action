@@ -12,7 +12,7 @@
 
 ## Pour la vérification de la Qualité de Code.
 
-* Python Code Quality : Va nous permettre de vérifier la qualité de Code avec :
+* Python Code Quality : Pour de vérifier les style de Code avec :
 
    - pep8
    - flake8

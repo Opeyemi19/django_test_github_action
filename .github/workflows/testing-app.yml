@@ -23,10 +23,10 @@ jobs:
         with:
           python-version: 3.7
 
-      - name: Another step
-        run: |
-          echo "Branch: ${GITHUB_REF#refs/heads/}"
-          echo "Sha: $GITHUB_SHA"
+      # - name: Another step
+      #   run: |
+      #     echo "Branch: ${GITHUB_REF#refs/heads/}"
+      #     echo "Sha: $GITHUB_SHA"
 
       - name: Install dependencies
         run: |
@@ -44,6 +44,9 @@ jobs:
       - name: Django Testing
         run: |
           python manage.py test
+      - name: Check Django configue to deploy in Production
+        run: |
+          python manage.py check --deploy
 
   analyse-sonarcloud:
     name: SonarCloud
