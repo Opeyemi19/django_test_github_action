@@ -29,18 +29,13 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 # pull official base image
 FROM python:3.8-slim-buster
 
-# create directory for the app user
-RUN mkdir -p /home/app
-
-# create the app user
-RUN addgroup --system prodjangotest && adduser --system --group prodjangotest
+# create directory for the app user && create the app user
+RUN mkdir -p /home/app && addgroup --system prodjangotest && adduser --system --group prodjangotest
 
 # create the appropriate directories
-ENV HOME=/home/app
-ENV APP_HOME=$HOME/web
-RUN mkdir $APP_HOME
-RUN mkdir $APP_HOME/staticfiles
-RUN mkdir $APP_HOME/mediafiles
+ENV HOME=/home/app \
+    APP_HOME=$HOME/web
+RUN mkdir $APP_HOME && mkdir $APP_HOME/staticfiles && mkdir $APP_HOME/mediafiles
 WORKDIR $APP_HOME
 
 # install dependencies
@@ -57,11 +52,8 @@ RUN chown -R prodjangotest:prodjangotest $APP_HOME
 # change to the app user
 USER prodjangotest
 
-# Run makemigrations and migrate
-RUN python manage.py migrate --noinput
-
-# Collect all static
-RUN python manage.py collectstatic --noinput
+# Run migrate and Collect all static
+RUN python manage.py migrate --noinput && python manage.py collectstatic --noinput
 
 CMD ["gunicorn", "core.wsgi", "--bind", "0.0.0.0:8000"]
 
