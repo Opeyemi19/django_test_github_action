@@ -1,9 +1,17 @@
+# FROM python:3.8-alpine
+# ENV PYTHONUNBUFFERED 1
+# WORKDIR /django
+# COPY requirements.txt requirements.txt
+# RUN pip3 install -r requirements.txt
+# COPY . .
+
+
 ###########
 # BUILDER #
 ###########
 
 # pull official base image
-FROM python:3.8-slim-buster as builder
+FROM python:3.8-alpine as builder
 
 # set work directory
 WORKDIR /usr/src/app
@@ -27,15 +35,25 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 #########
 
 # pull official base image
-FROM python:3.8-slim-buster
+FROM python:3.8-alpine
 
-# create directory for the app user && create the app user
-RUN mkdir -p /home/app && addgroup --system prodjangotest && adduser --system --group prodjangotest
+# create directory for the app user
+RUN mkdir -p /home/app
+
+# create the app user
+# RUN addgroup --system prodjangotest && adduser --system --group prodjangotest
+
+# Add our user and group first to make sure their IDs get assigned consistently
+# RUN groupadd -r app && useradd -r -g app app
+RUN addgroup -S prodjangotest && adduser -S -G prodjangotest prodjangotest
+
 
 # create the appropriate directories
-ENV HOME=/home/app \
-    APP_HOME=$HOME/web
-RUN mkdir $APP_HOME && mkdir $APP_HOME/staticfiles && mkdir $APP_HOME/mediafiles
+ENV HOME=/home/app
+ENV APP_HOME=$HOME/web
+RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
+RUN mkdir $APP_HOME/mediafiles
 WORKDIR $APP_HOME
 
 # install dependencies
@@ -52,8 +70,11 @@ RUN chown -R prodjangotest:prodjangotest $APP_HOME
 # change to the app user
 USER prodjangotest
 
-# Run migrate and Collect all static
-RUN python manage.py migrate --noinput && python manage.py collectstatic --noinput
+# Run makemigrations and migrate
+RUN python manage.py migrate --noinput
+
+# Collect all static
+# RUN python manage.py collectstatic --noinput
 
 CMD ["gunicorn", "core.wsgi", "--bind", "0.0.0.0:8000"]
 
