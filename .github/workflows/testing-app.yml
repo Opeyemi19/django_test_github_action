@@ -160,7 +160,8 @@ jobs:
           docker login --username=_ --password $HEROKU_TOKEN $HEROKU_REGISTRY_URL
           export HEROKU_API_KEY=$HEROKU_TOKEN
           heroku container:login
-          heroku container:push web --app fatayodevops1
-          heroku container:release web --app fatayodevops1
-          heroku ps:scale web=1 --app fatayodevops1
+          heroku create fatayodevops12
+          heroku container:push web --app fatayodevops12
+          heroku container:release web --app fatayodevops12
+          heroku ps:scale web=1 --app fatayodevops12
         # heroku logs --tail
