@@ -14,6 +14,24 @@ on:
 
 jobs:
 
+  deploy-heroku:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v2
+      - name: push to heroku
+        env:
+            HEROKU_REGISTRY_URL: registry.heroku.com
+            HEROKU_TOKEN : ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          docker login --username=_ --password $HEROKU_TOKEN $HEROKU_REGISTRY_URL
+          export HEROKU_API_KEY=$HEROKU_TOKEN
+          heroku container:login
+          heroku create fatayodevops
+          heroku container:push web --app fatayodevops
+          heroku container:release web --app fatayodevops
+          heroku ps:scale web=1 --app fatayodevops
+
   # test:
   #   runs-on: ubuntu-latest
   #   steps:
@@ -147,20 +165,3 @@ jobs:
   #         heroku_email: ${{ secrets.HEROKU_EMAIL }}
   #         usedocker: true
 
-  deploy-heroku:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v2
-      - name: push to heroku
-        env:
-            HEROKU_REGISTRY_URL: registry.heroku.com
-            HEROKU_TOKEN : ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          docker login --username=_ --password $HEROKU_TOKEN $HEROKU_REGISTRY_URL
-          export HEROKU_API_KEY=$HEROKU_TOKEN
-          heroku container:login
-          heroku create fatayodevops
-          heroku container:push web --app fatayodevops
-          heroku container:release web --app fatayodevops
-          heroku ps:scale web=1 --app fatayodevops
