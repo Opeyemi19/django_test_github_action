@@ -55,6 +55,6 @@ USER prodjangotest
 # Run migrate and Collect all static
 RUN python manage.py migrate --noinput && python manage.py collectstatic --noinput
 
-CMD ["gunicorn", "core.wsgi", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "core.wsgi::application"]
 
 # CMD python manage.py runserver 0.0.0.0:8000
