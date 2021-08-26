@@ -32,6 +32,17 @@ On a la création de notre dossier **.github/worflows** pour éxecuter notre Tes
     * Soit vous importez un projet directement a parti de GitHub pour l'analyser dans le sonarcloud.
     * Ou soit par le moyen de création de projet de façon **manuel** et pour l'intégrer dans notre pipeline CI/CD, ce qui va nous permettre d'avoir les **SECRET_TOKEN**, le code d'intégration dans notre Pipeline GitHub Action, la creaction de **Project Key**
 
+
+## Lors du déploiement sur Heroku
+L'erreur au niveau du projet NodeJS et Python,Django était au niveau du port que devrait retourner l'application une fois éxecuter donc il faut le capter pour éviter l'erreur de : **Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 60 seconds of launch**
+
+- Lien qui me sont utile: 
+    * https://github.com/AlbMej/Online-Loan-Application
+    * https://blog.aniketmore.com/cd-heroku-docker
+    * https://blog.devgenius.io/how-to-build-and-run-a-nodejs-app-with-docker-github-actions-59eb264dfef5
+    * https://faun.pub/deploying-a-dockerized-angular-app-with-github-actions-7e89fdb9c2e8
+
+
 ## Les Badges
 
 - C'est pour la branche Master

@@ -1,0 +1,14 @@
+curl https://cli-assets.heroku.com/install-ubuntu.sh | sh   # Pour l'installation de Heroku sur mon vagrant Ubuntu
+heroku --version
+heroku login ### Permet la connexion à Heroku
+heroku container:login ### Permet la connexion au gestionnaire de container de Heroku  
+heroku create <create-app-name>
+########## Entrez dans le dossier de l'application concerné si ce n'est pas le cas, ensuite faire le Build et le pousser vers le registry privée de Heroku en faisant
+heroku container:push web -a <create-app-name>
+heroku container:release web -a <create-app-name>
+heroku authorizations:create ### Si l'on veut génerer un nouveau Token en ligne de commande pour notre CI/CD
+heroku logs --tail -a <create-app-name> ## Pour vérifier le logs en cas de Probleme.
+
+
+
+
