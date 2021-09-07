@@ -76,7 +76,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${{ github.sha }}
-          args: --file=Dockerfile --severity-threshold=critical
+          args: --file=Dockerfile
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v1
         with:
@@ -91,13 +91,13 @@ jobs:
         uses: actions/checkout@v2
       
       ######
-      # - name: Cache Docker layers
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: /tmp/.buildx-cache
-      #     key: ${{ runner.os }}-buildx-${{ github.sha }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-buildx-
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
       ######
 
       - name: Login to Docker Hub
@@ -112,9 +112,9 @@ jobs:
         with:
           context: ./
           file: ./Dockerfile
-          #####
-          # builder: ${{ steps.buildx.outputs.name }}
-          #####
+          ####
+          builder: ${{ steps.buildx.outputs.name }}
+          ####
           push: true
           # tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${GITHUB_REF##*/}-$GITHUB_SHA
           tags: |
@@ -124,8 +124,8 @@ jobs:
            # docker.YOUR-HOSTNAME.com/${{ github.repository }}/octo-image:${{ github.sha }}
            # docker.YOUR-HOSTNAME.com/${{ github.repository }}/octo-image:${{ github.event.release.tag_name }}
           ######
-          # cache-from: type=local,src=/tmp/.buildx-cache
-          # cache-to: type=local,dest=/tmp/.buildx-cache
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
           ######
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -155,8 +155,9 @@ jobs:
           docker login --username=_ --password $HEROKU_TOKEN $HEROKU_REGISTRY_URL
           export HEROKU_API_KEY=$HEROKU_TOKEN
           heroku container:login
-          heroku create fatayodevops12
+          
           heroku container:push web --app fatayodevops12
           heroku container:release web --app fatayodevops12
           heroku ps:scale web=1 --app fatayodevops12
+        # heroku create fatayodevops12
         # heroku logs --tail
