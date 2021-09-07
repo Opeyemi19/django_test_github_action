@@ -14,126 +14,121 @@ on:
 
 jobs:
 
-  # test:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Set up Python 3.7
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: 3.7
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
 
-  #     # - name: Another step
-  #     #   run: |
-  #     #     echo "Branch: ${GITHUB_REF#refs/heads/}"
-  #     #     echo "Sha: $GITHUB_SHA"
+      # - name: Another step
+      #   run: |
+      #     echo "Branch: ${GITHUB_REF#refs/heads/}"
+      #     echo "Sha: $GITHUB_SHA"
 
-  #     - name: Install dependencies
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install -r requirements.txt
-  #     - name: Lint with flake8
-  #       run: |
-  #         pip install flake8
-  #         flake8
-  #     - name: Coverage report
-  #       run: |
-  #         pip install coverage
-  #         coverage run manage.py test
-  #         coverage report
-  #     - name: Django Testing
-  #       run: |
-  #         python manage.py test
-  #     - name: Check Django configue to deploy in Production
-  #       run: |
-  #         python manage.py check --deploy
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          flake8
+      - name: Coverage report
+        run: |
+          pip install coverage
+          coverage run manage.py test
+          coverage report
+      - name: Django Testing
+        run: |
+          python manage.py test
+      - name: Check Django configue to deploy in Production
+        run: |
+          python manage.py check --deploy
 
-  # analyse-sonarcloud:
-  #   name: SonarCloud
-  #   runs-on: ubuntu-latest
-  #   needs: [test]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-  #     - name: SonarCloud Scan
-  #       uses: SonarSource/sonarcloud-github-action@master
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  analyse-sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  # analyse-snyk: # Pour l'analyse de la vulnérabilité de mon container que je vais builder
-  #   runs-on: ubuntu-latest
-  #   needs: [test, analyse-sonarcloud]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Build a Docker image
-  #       run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${{ github.sha }} .
-  #     - name: Run Snyk to check Docker image for vulnerabilities
-  #       # Snyk can be used to break the build when it detects vulnerabilities.
-  #       # In this case we want to upload the issues to GitHub Code Scanning
-  #       continue-on-error: true
-  #       uses: snyk/actions/docker@master
-  #       env:
-  #         # In order to use the Snyk Action you will need to have a Snyk API token.
-  #         # More details in https://github.com/snyk/actions#getting-your-snyk-token
-  #         # or you can signup for free at https://snyk.io/login
-  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  #       with:
-  #         image: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${{ github.sha }}
-  #         args: --file=Dockerfile --severity-threshold=critical
-  #     - name: Upload result to GitHub Code Scanning
-  #       uses: github/codeql-action/upload-sarif@v1
-  #       with:
-  #         sarif_file: snyk.sarif
+  analyse-snyk: # Pour l'analyse de la vulnérabilité de mon container que je vais builder
+    runs-on: ubuntu-latest
+    needs: [test, analyse-sonarcloud]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build a Docker image
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${{ github.sha }} .
+      - name: Run Snyk to check Docker image for vulnerabilities
+        continue-on-error: true
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${{ github.sha }}
+          args: --file=Dockerfile --severity-threshold=critical
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: snyk.sarif
 
-  # build:
-  #   name: Build Project
-  #   runs-on: ubuntu-latest
-  #   needs: [analyse-sonarcloud, analyse-snyk]
-  #   steps:
-  #     - name: Check Out Repo 
-  #       uses: actions/checkout@v2
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+    needs: [analyse-sonarcloud, analyse-snyk]
+    steps:
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
       
-  #     ######
-  #     # - name: Cache Docker layers
-  #     #   uses: actions/cache@v2
-  #     #   with:
-  #     #     path: /tmp/.buildx-cache
-  #     #     key: ${{ runner.os }}-buildx-${{ github.sha }}
-  #     #     restore-keys: |
-  #     #       ${{ runner.os }}-buildx-
-  #     ######
+      ######
+      # - name: Cache Docker layers
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: /tmp/.buildx-cache
+      #     key: ${{ runner.os }}-buildx-${{ github.sha }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-buildx-
+      ######
 
-  #     - name: Login to Docker Hub
-  #       uses: docker/login-action@v1
-  #       with:
-  #         username: ${{ secrets.DOCKER_HUB_USERNAME }}
-  #         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-  #     - name: Build and push
-  #       id: docker_build
-  #       uses: docker/build-push-action@v2
-  #       with:
-  #         context: ./
-  #         file: ./Dockerfile
-  #         #####
-  #         # builder: ${{ steps.buildx.outputs.name }}
-  #         #####
-  #         push: true
-  #         # tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${GITHUB_REF##*/}-$GITHUB_SHA
-  #         tags: |
-  #           ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:latest
-  #           ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${{ github.sha }}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          #####
+          # builder: ${{ steps.buildx.outputs.name }}
+          #####
+          push: true
+          # tags: ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${GITHUB_REF##*/}-$GITHUB_SHA
+          tags: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/test-github-action:${{ github.sha }}
            
-  #          # docker.YOUR-HOSTNAME.com/${{ github.repository }}/octo-image:${{ github.sha }}
-  #          # docker.YOUR-HOSTNAME.com/${{ github.repository }}/octo-image:${{ github.event.release.tag_name }}
-  #         ######
-  #         # cache-from: type=local,src=/tmp/.buildx-cache
-  #         # cache-to: type=local,dest=/tmp/.buildx-cache
-  #         ######
-  #     - name: Image digest
-  #       run: echo ${{ steps.docker_build.outputs.digest }}
+           # docker.YOUR-HOSTNAME.com/${{ github.repository }}/octo-image:${{ github.sha }}
+           # docker.YOUR-HOSTNAME.com/${{ github.repository }}/octo-image:${{ github.event.release.tag_name }}
+          ######
+          # cache-from: type=local,src=/tmp/.buildx-cache
+          # cache-to: type=local,dest=/tmp/.buildx-cache
+          ######
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
 
   # deploy-heroku:
   #   runs-on: ubuntu-latest
@@ -147,33 +142,21 @@ jobs:
   #         heroku_email: ${{ secrets.HEROKU_EMAIL }}
   #         usedocker: true
 
-  # deploy-heroku:
-  #   runs-on: ubuntu-latest
-  #   # needs: [build]
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: push to heroku
-  #       env:
-  #           HEROKU_REGISTRY_URL: registry.heroku.com
-  #           HEROKU_TOKEN : ${{ secrets.HEROKU_API_KEY }}
-  #       run: |
-  #         docker login --username=_ --password $HEROKU_TOKEN $HEROKU_REGISTRY_URL
-  #         export HEROKU_API_KEY=$HEROKU_TOKEN
-  #         heroku container:login
-  #         heroku create fatayodevops12
-  #         heroku container:push web --app fatayodevops12
-  #         heroku container:release web --app fatayodevops12
-  #         heroku ps:scale web=1 --app fatayodevops12
-  #       # heroku logs --tail
-
-
-  build:
+  deploy-heroku:
     runs-on: ubuntu-latest
+    needs: [build]
     steps:
       - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "fatayodjango" #Must be unique in Heroku
-          heroku_email: "sodikfatayo@gmail.com"
-          usedocker: true
+      - name: push to heroku
+        env:
+            HEROKU_REGISTRY_URL: registry.heroku.com
+            HEROKU_TOKEN : ${{ secrets.HEROKU_API_KEY }}
+        run: |
+          docker login --username=_ --password $HEROKU_TOKEN $HEROKU_REGISTRY_URL
+          export HEROKU_API_KEY=$HEROKU_TOKEN
+          heroku container:login
+          heroku create fatayodevops12
+          heroku container:push web --app fatayodevops12
+          heroku container:release web --app fatayodevops12
+          heroku ps:scale web=1 --app fatayodevops12
+        # heroku logs --tail
